@@ -1,17 +1,18 @@
+import React, { Suspense } from 'react';
 import { Box, createTheme, CssBaseline, ThemeProvider } from '@mui/material';
-import React, { createContext } from 'react';
 import ResponsiveAppBar from './AppBar';
 import Footer from './Footer';
-import ProductsList from './features/products/ProductList';
+
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   // Link
 } from "react-router-dom";
-import ProductInfo from './features/products/ProductInfo';
-import Checkout from './features/checkout/Checkout';
 
+const ProductsList = React.lazy(() => import('./features/products/ProductList'));
+const ProductInfo = React.lazy(() => import('./features/products/ProductInfo'));
+const Checkout = React.lazy(() => import('./features/checkout/Checkout'));
 
 const theme = createTheme();
 
@@ -21,20 +22,23 @@ function App(): React.ReactElement {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Router>
-        <div>
-          <ResponsiveAppBar />
-          <Box sx={{ mt: 2 }}>
-            <Routes>
-              <Route path="/" element={<ProductsList />} />
-              <Route path="/:slug" element={<ProductInfo />} />
-              <Route path="/checkout" element={<Checkout />} />
-            </Routes>
-          </Box>
-          <Footer
-            title="FootComm Footwear"
-            description="Buy Quality Footwear Here!"
-          />
-        </div>
+        <Suspense fallback={<div>Loading...</div>}>
+          <div>
+            <ResponsiveAppBar />
+            <Box sx={{ mt: 2 }}>
+
+              <Routes>
+                <Route path="/" element={<ProductsList />} />
+                <Route path="/:slug" element={<ProductInfo />} />
+                <Route path="/checkout" element={<Checkout />} />
+              </Routes>
+            </Box>
+            <Footer
+              title="FootComm Footwear"
+              description="Buy Quality Footwear Here!"
+            />
+          </div>
+        </Suspense>
       </Router>
     </ThemeProvider>
   );
