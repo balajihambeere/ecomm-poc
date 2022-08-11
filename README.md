@@ -1,5 +1,5 @@
 
-# Ecommerce POC Application with React, Typescript.
+# E-commerce POC Application with React, Typescript.
 # Install dependecies
 ```bash
 npm install
